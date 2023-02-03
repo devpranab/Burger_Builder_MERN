@@ -106,7 +106,7 @@ class Checkout extends Component {
                     </select>
                     <br />
                     <Button
-                        style={{ backgroundColor: "#D70F64" }} onClick={this.submitHandler}>
+                        style={{ backgroundColor: "#D70F64" }} onClick={this.submitHandler} disabled={!this.props.purchasable}>
                         Place Order
                     </Button>
                     <Button
