@@ -67,7 +67,7 @@ const Controls = (props) => {
           })}
         </CardBody>
         <CardFooter>
-          <h5>Price: INR</h5>
+        <h5>Price: <strong>{props.price}</strong> INR</h5>
         </CardFooter>
       </Card>
     </div>
