@@ -11,7 +11,15 @@ export const authSuccess = (token, userId) => {
     }
 }
 
+export const authLoading = isLoading => {
+    return {
+        type: actionTypes.AUTH_LOADING,
+        payload: isLoading
+    }
+}
+
 export const auth = (email, password, mode) => dispatch => {
+    dispatch(authLoading(true));
     const authData = {
         email: email,
         password: password,
@@ -29,6 +37,7 @@ export const auth = (email, password, mode) => dispatch => {
     axios.post(authUrl + API_KEY, authData)
     .then(response => {
         console.log(response);
+        dispatch(authLoading(false));
         //Using Local Storage to Store token
         localStorage.setItem("token", response.data.idToken);
         localStorage.setItem("userId", response.data.localId);
@@ -36,7 +45,10 @@ export const auth = (email, password, mode) => dispatch => {
         localStorage.setItem("expirationTime", expirationTime);
         //For Store Redux Store
         dispatch(authSuccess(response.data.idToken, response.data.localId));
-    });
+    }).catch(err => {
+        dispatch(authLoading(false));
+        console.log(err);
+    })
 }
 
 export const logOut = () => {

@@ -2,10 +2,18 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 import { connect } from "react-redux";
 import { auth } from "../redux/authActionCreators";
+import Spinner from "../Components/Spinner/Spinner";
 
 const mapDispatchToProps = dispatch => {
   return {
     auth: (email, password, mode) => dispatch(auth(email, password, mode))
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+   authLoading: state.authLoading,
+   authFailedMsg: state.authFailedMsg
   }
 }
 
@@ -21,22 +29,12 @@ class Auth extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <button
-          style={{
-            width: "100%",
-            backgroundColor: "#D70F64",
-            color: "#fff",
-          }}
-          className="btn btn-lg"
-          onClick={this.switchModeHandler}
-        >
-          Switch to {this.state.mode === "Sign Up" ? "Login" : "Sign Up"}
-        </button>
-        <br />
-        <br />
-        <Formik
+    let form = null;
+    if(this.props.authLoading){
+      form = <Spinner/>
+    }else{
+      form = (
+<Formik
           initialValues={{ email: "", password: "", passwordConfirm: "" }}
           onSubmit={(values) => {
             console.log("values:", values);
@@ -115,12 +113,30 @@ class Auth extends Component {
             </div>
           )}
         </Formik>
+      )
+    }
+    return (
+      <div>
+        <button
+          style={{
+            width: "100%",
+            backgroundColor: "#D70F64",
+            color: "#fff",
+          }}
+          className="btn btn-lg"
+          onClick={this.switchModeHandler}
+        >
+          Switch to {this.state.mode === "Sign Up" ? "Login" : "Sign Up"}
+        </button>
+        <br />
+        <br />
+        {form}
       </div>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
 
 //sana4041@gmail.com
 //999999
