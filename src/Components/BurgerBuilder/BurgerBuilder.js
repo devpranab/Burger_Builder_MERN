@@ -19,7 +19,16 @@ class BurgerBuilder extends Component {
     ],
     totalPrice: 80,
     modalOpen: false,
-  };
+    purchasable: false
+}
+
+// updatepPurchasable function
+updatepPurchasable = ingredients => {
+    const sum = ingredients.reduce((sum, element) => {
+     return sum + element.amount;
+    },0);
+    this.setState({purchasable: sum > 0})
+   }
 
   // add function
   addIngredientHandle = (type) => {
@@ -30,6 +39,7 @@ class BurgerBuilder extends Component {
       if (item.type === type) item.amount++;
     }
     this.setState({ ingredients: ingredients, totalPrice: newPrice });
+    this.updatepPurchasable(ingredients);
   };
 
   // remove function
@@ -44,49 +54,49 @@ class BurgerBuilder extends Component {
       }
     }
     this.setState({ ingredients: ingredients, totalPrice: newPrice });
+    this.updatepPurchasable(ingredients);
   };
 
   // toggle function
   toggleModal = () => {
     this.setState({
-      modalOpen: !this.state.modalOpen
+      modalOpen: !this.state.modalOpen,
     });
   };
 
   render() {
     return (
-     <div>
-              <div className="d-flex flex-md-row flex-column">
-        <Burger ingredients={this.state.ingredients} />
-        <Controls
-          ingredientAdded={this.addIngredientHandle}
-          ingredientRemoved={this.removeIngredientHandle}
-          price={this.state.totalPrice}
-          toggleModal={this.toggleModal}
-        />
+      <div>
+        <div className="d-flex flex-md-row flex-column">
+          <Burger ingredients={this.state.ingredients} />
+          <Controls
+            ingredientAdded={this.addIngredientHandle}
+            ingredientRemoved={this.removeIngredientHandle}
+            price={this.state.totalPrice}
+            toggleModal={this.toggleModal}
+            purchasable={this.state.purchasable}
+          />
+        </div>
+        {/* Modal */}
+        <Modal isOpen={this.state.modalOpen}>
+          <ModalHeader>Your Order Summary</ModalHeader>
+          <ModalBody>
+            <h5>Total Price: {this.state.totalPrice.toFixed(0)} INR</h5>
+            <Summary ingredients={this.state.ingredients} />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              style={{ backgroundColor: "#D70F64" }}
+              onClick={this.toggleModal}
+            >
+              Continue to Checkout
+            </Button>
+            <Button color="secondary" onClick={this.toggleModal}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
-       {/* Modal */}
-       <Modal isOpen={this.state.modalOpen}>
-       <ModalHeader>Your Order Summary</ModalHeader>
-       <ModalBody>
-           <h5>
-               Total Price: {this.state.totalPrice.toFixed(0)} INR
-           </h5>
-           <Summary ingredients={this.state.ingredients} />
-       </ModalBody>
-       <ModalFooter>
-           <Button
-               style={{ backgroundColor: "#D70F64" }}
-               onClick={this.toggleModal}
-           >
-               Continue to Checkout
-           </Button>
-           <Button color="secondary" onClick={this.toggleModal}>
-               Cancel
-           </Button>
-       </ModalFooter>
-   </Modal>
-     </div>
     );
   }
 }
