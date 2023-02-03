@@ -5,7 +5,7 @@ import { auth } from "../redux/authActionCreators";
 
 const mapDispatchToProps = dispatch => {
   return {
-    auth: (email, password) => dispatch(auth(email, password))
+    auth: (email, password, mode) => dispatch(auth(email, password, mode))
   }
 }
 
@@ -40,7 +40,7 @@ class Auth extends Component {
           initialValues={{ email: "", password: "", passwordConfirm: "" }}
           onSubmit={(values) => {
             console.log("values:", values);
-            this.props.auth(values.email, values.passwordConfirm);
+            this.props.auth(values.email, values.password, this.state.mode);
           }}
           validate={(values) => {
             const errors = {};
