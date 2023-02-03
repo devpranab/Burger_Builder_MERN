@@ -19,7 +19,6 @@ if (ingredientArr.length === 0) {
   ingredientArr = <p>Please add some ingredients!</p>;
 }
 
-console.log(ingredientArr);
   return (
     <div className="Burger">
       <Ingredient type="bread-top" />
