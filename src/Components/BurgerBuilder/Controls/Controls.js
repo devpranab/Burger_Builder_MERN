@@ -23,7 +23,7 @@ const BuildControl = (props) => {
                 Less
             </button>
             <button
-                className="btn btn-success btn-sm m-1" onClick={props.ade}>
+                className="btn btn-success btn-sm m-1" onClick={props.added}>
                 More
             </button>
         </div>
@@ -60,6 +60,8 @@ const Controls = (props) => {
                 label={item.label}
                 type={item.type}
                 key={Math.random()}
+                added={() => props.ingredientAdded(item.type)}
+                removed={() => props.ingredientRemoved(item.type)}
               />
             );
           })}
