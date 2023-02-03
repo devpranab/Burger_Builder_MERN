@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Burger from "./Burger/Burger";
 import Controls from "./Controls/Controls";
+import Summary from "./Summary/Summary";
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from "reactstrap";
 
 const INGREDIENT_PRICE = {
-    salad: 20,
-    cheese: 40,
-    meat: 90
-}
+  salad: 20,
+  cheese: 40,
+  meat: 90,
+};
 
 class BurgerBuilder extends Component {
   state = {
@@ -16,6 +18,7 @@ class BurgerBuilder extends Component {
       { type: "meat", amount: 0 },
     ],
     totalPrice: 80,
+    modalOpen: false,
   };
 
   // add function
@@ -26,7 +29,7 @@ class BurgerBuilder extends Component {
     for (let item of ingredients) {
       if (item.type === type) item.amount++;
     }
-    this.setState({ingredients : ingredients, totalPrice : newPrice});
+    this.setState({ ingredients: ingredients, totalPrice: newPrice });
   };
 
   // remove function
@@ -40,19 +43,50 @@ class BurgerBuilder extends Component {
         item.amount--;
       }
     }
-    this.setState({ingredients : ingredients, totalPrice : newPrice})
+    this.setState({ ingredients: ingredients, totalPrice: newPrice });
+  };
+
+  // toggle function
+  toggleModal = () => {
+    this.setState({
+      modalOpen: !this.state.modalOpen
+    });
   };
 
   render() {
     return (
-      <div className="d-flex flex-md-row flex-column">
+     <div>
+              <div className="d-flex flex-md-row flex-column">
         <Burger ingredients={this.state.ingredients} />
         <Controls
           ingredientAdded={this.addIngredientHandle}
           ingredientRemoved={this.removeIngredientHandle}
           price={this.state.totalPrice}
+          toggleModal={this.toggleModal}
         />
       </div>
+       {/* Modal */}
+       <Modal isOpen={this.state.modalOpen}>
+       <ModalHeader>Your Order Summary</ModalHeader>
+       <ModalBody>
+           <h5>
+               Total Price: {this.state.totalPrice.toFixed(0)} INR
+           </h5>
+           <Summary ingredients={this.state.ingredients} />
+       </ModalBody>
+       <ModalFooter>
+           <Button
+               style={{ backgroundColor: "#D70F64" }}
+               onClick={this.toggleModal}
+           >
+               Continue to Checkout
+           </Button>
+           <Button color="secondary" onClick={this.toggleModal}>
+               Cancel
+           </Button>
+       </ModalFooter>
+   </Modal>
+     </div>
     );
   }
 }
