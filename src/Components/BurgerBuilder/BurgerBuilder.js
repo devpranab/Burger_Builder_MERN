@@ -64,6 +64,16 @@ updatepPurchasable = ingredients => {
     });
   };
 
+  // handleCheckout
+  handleCheckout = () => {
+    this.props.history.push("/checkout");
+  };
+
+//   componentDidMount(){
+//     console.log(this.props);//history for routing
+//   }
+
+
   render() {
     return (
       <div>
@@ -87,7 +97,7 @@ updatepPurchasable = ingredients => {
           <ModalFooter>
             <Button
               style={{ backgroundColor: "#D70F64" }}
-              onClick={this.toggleModal}
+              onClick={this.handleCheckout}
             >
               Continue to Checkout
             </Button>

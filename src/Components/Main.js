@@ -1,14 +1,19 @@
 import React from "react";
 import Header from "./Header/Header";
 import BurgerBuilder from "./BurgerBuilder/BurgerBuilder";
+import { Route } from "react-router-dom";
+import Orders from "./Orders/Orders";
+import Checkout from "./Orders/Checkout/Checkout";
 
 const Main = () => {
   return (
     <div>
       <Header />
-      <div className="container">
-        <BurgerBuilder />
-      </div>
+      <div className="container pt-5" style={{ minHeight: "75.4vh" }}>
+            <Route path="/orders" component={Orders} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/" exact component={BurgerBuilder} />
+        </div>
     </div>
   );
 };
