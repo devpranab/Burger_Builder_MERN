@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import Header from "./Header/Header";
 import BurgerBuilder from "./BurgerBuilder/BurgerBuilder";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -6,6 +6,7 @@ import Orders from "./Orders/Orders";
 import Checkout from "./Orders/Checkout/Checkout";
 import Auth from "../Auth/Auth";
 import { connect } from "react-redux";
+import { authCheck } from "../redux/authActionCreators";
 
 // state access by redux
 const mapStateToProps = (state) => {
@@ -14,9 +15,19 @@ const mapStateToProps = (state) => {
   };
 };
 
-const Main = (props) => {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    authCheck: () => dispatch(authCheck())
+  };
+};
+
+class Main extends Component {
+  componentDidMount(){
+      this.props.authCheck();
+  }
+  render(){
   let ourRoutes = null;
-  if (props.token === null) {
+  if (this.props.token === null) {
     ourRoutes = (
       <Switch>
         <Route path="/login" component={Auth} />
@@ -41,6 +52,7 @@ const Main = (props) => {
       </div>
     </div>
   );
+ }
 };
 
-export default connect(mapStateToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

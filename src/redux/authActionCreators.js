@@ -29,8 +29,29 @@ export const auth = (email, password, mode) => dispatch => {
     axios.post(authUrl + API_KEY, authData)
     .then(response => {
         console.log(response);
+        //Using Local Storage to Store token
+        localStorage.setItem("token", response.data.idToken);
+        localStorage.setItem("userId", response.data.localId);
+        const expirationTime = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+        localStorage.setItem("expirationTime", expirationTime);
+        //For Store Redux Store
         dispatch(authSuccess(response.data.idToken, response.data.localId));
     });
 }
+
+export const authCheck = () => dispatch => {
+    const token = localStorage.getItem("token");
+    if(!token){
+      // Logout
+    }else{
+      const expirationTime = new Date(localStorage.getItem("expirationTime"));
+      if(expirationTime <= new Date()){
+       // Logout
+      }else{
+          const userId = localStorage.getItem("userId");
+          dispatch(authSuccess(token, userId));
+      }
+    }
+  }
 
 //https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
