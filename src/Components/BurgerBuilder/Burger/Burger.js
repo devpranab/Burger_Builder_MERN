@@ -2,12 +2,28 @@ import React from "react";
 import "./Burger.css";
 import Ingredient from "../Ingredient/Ingredient";
 
-const Burger = () => {
+const Burger = props => {
+  let ingredientArr = props.ingredients
+  .map((item) => {
+      let amountArr = [...Array(item.amount).keys()];
+      return amountArr.map((_) => {
+          return <Ingredient type={item.type} key={Math.random()} />;
+      });
+  })
+  //all in one array - when call reduce function store [] in arr and 
+  .reduce((arr, element) => {
+      return arr.concat(element);
+  }, []);
+
+if (ingredientArr.length === 0) {
+  ingredientArr = <p>Please add some ingredients!</p>;
+}
+
+console.log(ingredientArr);
   return (
     <div className="Burger">
       <Ingredient type="bread-top" />
-      <Ingredient type="meat" />
-      <Ingredient type="meat" />
+      {ingredientArr}
       <Ingredient type="bread-bottom" />
     </div>
   );
