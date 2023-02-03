@@ -2,49 +2,73 @@ import React, { Component } from "react";
 import { Formik } from "formik";
 
 class Auth extends Component {
+  state = {
+    mode: "Sign Up",
+  };
+
+  switchModeHandler = () => {
+    this.setState({
+      mode: this.state.mode === "Sign Up" ? "Login" : "Sign Up",
+    });
+  };
+
   render() {
     return (
       <div>
-        <h2 style={{marginBottom: "15px"}}>Login</h2>
+        <button
+          style={{
+            width: "100%",
+            backgroundColor: "#D70F64",
+            color: "#fff",
+          }}
+          className="btn btn-lg"
+          onClick={this.switchModeHandler}
+        >
+          Switch to {this.state.mode === "Sign Up" ? "Login" : "Sign Up"}
+        </button>
+        <br />
+        <br />
         <Formik
-          initialValues={
-            { email: "", password: "", passwordConfirm: "" }
-        }
+          initialValues={{ email: "", password: "", passwordConfirm: "" }}
           onSubmit={(values) => {
             console.log("values:", values);
           }}
-
           validate={(values) => {
             const errors = {};
 
-            if(!values.email){
-                errors.email = "Required";
-            }else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)){
-                errors.email = "Invalid email address"
+            if (!values.email) {
+              errors.email = "Required";
+            } else if (
+              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+            ) {
+              errors.email = "Invalid email address";
             }
 
-            if(!values.password){
-                errors.password = "Required";
-            }else if(values.password.length < 6){
-                errors.password = "Password must be atleast 6 characters!"
+            if (!values.password) {
+              errors.password = "Required";
+            } else if (values.password.length < 6) {
+              errors.password = "Password must be atleast 6 characters!";
             }
-            
-            if(!values.passwordConfirm){
-                errors.passwordConfirm = "Required";
-            }else if(values.password!==values.passwordConfirm){
-                errors.passwordConfirm = "Password doesn't match"
+            if (this.state.mode === "Sign Up") {
+            if (!values.passwordConfirm) {
+              errors.passwordConfirm = "Required";
+            } else if (values.password !== values.passwordConfirm) {
+              errors.passwordConfirm = "Password doesn't match";
+             }
             }
             console.log("errors:", errors);
             return errors;
           }}
         >
           {/* Display form */}
-          {({values, handleChange, handleSubmit, errors}) => (
-            <div style={{
+          {({ values, handleChange, handleSubmit, errors }) => (
+            <div
+              style={{
                 border: "1px solid gray",
                 padding: "20px",
-                borderRadius: "5px"
-            }}>
+                borderRadius: "5px",
+              }}
+            >
               <form onSubmit={handleSubmit}>
                 <input
                   name="email"
@@ -53,7 +77,7 @@ class Auth extends Component {
                   value={values.email}
                   onChange={handleChange}
                 />
-                <span style={{color: "red"}}>{errors.email}</span>
+                <span style={{ color: "red" }}>{errors.email}</span>
                 <br />
                 <input
                   name="password"
@@ -62,8 +86,9 @@ class Auth extends Component {
                   value={values.password}
                   onChange={handleChange}
                 />
-                 <span style={{color: "red"}}>{errors.password}</span>
+                <span style={{ color: "red" }}>{errors.password}</span>
                 <br />
+                {this.state.mode === "Sign Up" ? <div>
                 <input
                   name="passwordConfirm"
                   placeholder="Confirm Password"
@@ -71,10 +96,11 @@ class Auth extends Component {
                   value={values.passwordConfirm}
                   onChange={handleChange}
                 />
-                 <span style={{color: "red"}}>{errors.passwordConfirm}</span>
+                <span style={{ color: "red" }}>{errors.passwordConfirm}</span>
                 <br />
+                </div> : null}
                 <button type="submit" className="btn btn-success">
-                  Sign up
+                  {this.state.mode === "Sign Up" ? "Sign Up" : "Login"}
                 </button>
               </form>
             </div>
@@ -86,3 +112,6 @@ class Auth extends Component {
 }
 
 export default Auth;
+
+//sana4041@gmail.com
+//999999
