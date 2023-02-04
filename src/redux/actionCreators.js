@@ -40,9 +40,9 @@ export const orderLoadFailed = () => {
     };
 };
 
-export const fetchOrders = () => dispatch => {
+export const fetchOrders = (token) => dispatch => {
     axios
-        .get("https://burger-builder-edc35-default-rtdb.firebaseio.com/orders.json")
+        .get("https://burger-builder-edc35-default-rtdb.firebaseio.com/orders.json?auth=" + token)
         .then((response) => {
             console.log(response.data);
             dispatch(loadOrders(response.data));
